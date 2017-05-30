@@ -11,9 +11,9 @@
     </header>
     <?php foreach ($articles as $article): ?>
     <article>
-        <h2><?php echo $article['art_title'] ?></h2>
-        <p><?php echo nl2br($article['art_content']) ?></p>
-        <small class="pull-right"><?php echo 'Publié le ', $article['art_date'], ' par Jean Forteroche' ?></small><br>
+    <h2><?php echo $article->getTitle() ?></h2>
+    <p><?php echo $article->getContent() ?></p>
+    <small class="pull-right"><?php echo 'Publié le ', $article->getDate(), ' par Jean Forteroche' ?></small><br>
     </article>
     <?php endforeach ?>
     <footer class="footer">
@@ -23,3 +23,7 @@
     
 </body>
 </html>
+
+
+
+
