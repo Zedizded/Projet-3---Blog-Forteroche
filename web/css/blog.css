@@ -1,9 +1,23 @@
 body { 
-    padding-top: 50px; 
+    padding-top: 70px; 
+}
+
+a {
+    color:#848365;
 }
 
 .footer {
     border-top: 1px solid #ccc;
     padding-top: 10px;
     text-align: center;
+    margin-top: 20px;
+    color: #7c7c7c;
+}
+
+#accordion {
+    height: 505px;
+}
+
+#accordion h3, #accordion h3:active {
+    font-size: 1.1em;
 }

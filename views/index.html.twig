@@ -4,13 +4,14 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{{ asset('/lib/jquery/jquery-ui-custom-v1.css') }}" rel="stylesheet">    
     <link href="{{ asset('/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/css/blog.css') }}" rel="stylesheet">
     <title>Billet simple pour l'Alaska | Accueil</title>
 </head>
 <body>
     <div class="container">
-        <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-target">
@@ -24,18 +25,29 @@
                 </div>
             </div><!-- /.container -->
         </nav>
+        <div id="accordion" class="col-xs-10 col-xs-offset-1">
         {% for article in articles %}
-        <article>
-            <h2>{{ article.title }}</h2>
-            <p>{{ article.content|nl2br}}</p>
-            <small class="pull-right">Publié le {{ article.date }} par Jean Forteroche</small>
-        </article>
+            <h3>{{ article.title }}</h3>
+            <div>
+                <p>{{ article.content|nl2br}}</p>
+                <small class="pull-right">Publié le {{ article.date }} par Jean Forteroche</small>
+            </div>
         {% endfor %}
+        </div>
         <footer class="footer col-xs-12">
-            <p>Billet simple pour l'Alaska - Jean Forteroche - Tous droits réservés.</p>
-            <p>Création originale <a href="http://zcomdezigne.com">ZcOmDeZign ©</a></p>
+            <p><i>Billet simple pour l'Alaska</i> - Jean Forteroche - Tous droits réservés. ©</p>
+            <p>Création originale <a href="http://zcomdezigne.com"> © ZcOmDeZign</a></p>
         </footer>
     </div>
 </body>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+    $(function() {
+    $("#accordion").accordion({
+        collapsible: true,
+        heightStyle: "fill"
+    });
+    });
+  </script>
 </html>
-
