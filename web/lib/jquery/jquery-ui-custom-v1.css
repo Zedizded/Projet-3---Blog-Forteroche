@@ -80,6 +80,7 @@ html .ui-button.ui-state-disabled:active {
 	background: #f6f6f6;
 	font-weight: normal;
 	color: #454545;
+    outline: none;
 }
 
 .ui-state-active,
