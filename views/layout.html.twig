@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="{{ asset('/lib/jquery/jquery-ui-custom-v1.css') }}" rel="stylesheet">    
+        <link href="{{ asset('/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('/css/blog.css') }}" rel="stylesheet">
+        <title>Billet simple pour l'Alaska | {% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <div id="content">{% block content %}{% endblock %}</div>
+
+        <footer class="container footer">
+            <p><i>Billet simple pour l'Alaska</i> - Jean Forteroche - Tous droits réservés. ©</p>
+            <p>Création originale <a href="http://zcomdezign.com"> © ZcOmDeZign</a></p>
+        </footer>
+    </body>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        $('a[href^="#"]').click(function(){  
+            var the_id = $(this).attr("href");  
+
+            $('html, body').animate({  
+                scrollTop:$(the_id).offset().top  
+            }, 'slow');  
+            return false;  
+        }); 
+    </script>
+
+<!--
+    <script>
+        $(function() {
+            $('#spyingScroll').on('click', function(e) {
+                e.preventDefault();
+                var hash = this.hash;
+                $('html, body').animate({
+                    scrollTop: $(this.hash).offset().top
+                }, 1000, function() {
+                    window.location.hash = hash;
+                });
+            });
+        });
+    </script>
+-->
+
+    <script>
+        $(function() {
+            $("#accordion").accordion({
+                collapsible: true,
+                heightStyle: "fill"
+            });
+        });
+    </script>
+</html>

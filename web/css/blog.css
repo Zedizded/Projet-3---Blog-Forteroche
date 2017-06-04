@@ -3,11 +3,12 @@ body {
 }
 
 a {
-    color:#848365;
+    color:#368a91;
 }
 
 a:hover {
     text-decoration: none;
+    color:#244a65;
 }
 
 .footer {
@@ -41,8 +42,6 @@ a:hover {
 
 .jumbotron p {
     font-size: 3.5em;
-/*
-*/
     letter-spacing: 2.9px;
 }
 
@@ -54,21 +53,69 @@ a:hover {
     display: block;
 }
 
+@media screen and (max-width: 288px) {
+    .footer {
+        margin-top: 50px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .ui-accordion .ui-accordion-content {
+        padding: 1em;
+        border-top: 0;
+        overflow: auto;
+        text-align: left;
+    }
+}
+
 @media screen and (max-width: 768px) {
-  .jumbotron h1,
-  .jumbotron .h1 {
-    font-size: 63px;
-  }
+    .jumbotron h1,
+    .jumbotron .h1 {
+        font-size: 63px;
+    }
 }
 
 @media screen and (max-width: 1028px) {
-  #jumbo {
-    max-width : 100%;
-    height: auto;
-    display: block;
-  }
-  .jumbotron p {
-    color: #fff;
-    text-shadow: 0 0 5px rgba(0,0,0, 0.5);
-  }
+    #jumbo {
+        max-width : 100%;
+        height: auto;
+        display: block;
+    }
+    .jumbotron p {
+        color: #fff;
+        text-shadow: 0 0 5px rgba(0,0,0, 0.5);
+    }
+    #btnRead {
+        display: none;
+    }
 }
+
+#btnRead a {
+    position: absolute;
+    bottom: 100px;
+    background-color: #244a65;
+    border-color: #244a65;
+    color: #eee;
+}
+
+#btnComment a {
+    background-color: #244a65;
+    border-color: #244a65;
+    color: #eee;
+}
+
+.titleComment {
+    color: #244a65;
+}
+
+#commentDesign h3 {
+    color: #7a7a7a;
+}
+
+#commentDesign p {
+    padding: 9px;
+    background-color: #eee;
+    border-radius: 4px;
+}
+
+

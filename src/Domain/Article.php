@@ -25,7 +25,7 @@ class Article
      */
     private $content;
 
-        /**
+    /**
      * Article date.
      *
      * @var datetime
