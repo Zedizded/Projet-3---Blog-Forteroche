@@ -12,7 +12,7 @@ class ArticleDAO extends DAO
      * @return array A list of all articles.
      */
     public function findAll() {
-        $sql = "select * from t_article order by art_id";
+        $sql = "select art_id, art_title, art_content, DATE_FORMAT(art_date, '%d/%m/%Y à %Hh%imin%ss') AS art_date_fr from t_article order by art_id";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects
@@ -32,7 +32,7 @@ class ArticleDAO extends DAO
      * @return \Projet3BlogForteroche\Domain\Article|throws an exception if no matching article is found
      */
     public function find($id) {
-        $sql = "select * from t_article where art_id=?";
+        $sql = "select art_id, art_title, art_content, DATE_FORMAT(art_date, '%d/%m/%Y à %Hh%imin%ss') AS art_date_fr from t_article where art_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row)
@@ -52,7 +52,7 @@ class ArticleDAO extends DAO
         $article->setId($row['art_id']);
         $article->setTitle($row['art_title']);
         $article->setContent($row['art_content']);
-        $article->setDate($row['art_date']);
+        $article->setDate($row['art_date_fr']);
         return $article;
     }
 }

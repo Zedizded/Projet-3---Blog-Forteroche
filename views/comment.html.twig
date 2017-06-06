@@ -8,13 +8,43 @@
         <div id="commentDesign">
             <h3>Commentaires</h3>
             {% for comment in comments %}
-                <p class="col-xl-12"><strong>{{ comment.author }} a dit :</strong> {{ comment.content|nl2br }}</p><br>
+                <p class="col-xl-12"><strong>{{ comment.author }} a dit :</strong> {{ comment.content|nl2br }}<br>
+                <small class="pull-right">Publié le {{ comment.date }} par {{ comment.author }}</small></p><br>
             {% else %}
                 <p class="col-xl-12">Il n'y a pas encore de commentaire sur ce chapitre. Souhaitez-vous être le premier à laisser un commentaire ?</p><br>
             {% endfor %}
-            <div id="btnComment" class="row">
-                <a class="btn col-xl-2 col-xs-offset-5" href="{{ path('home') }}#accordion">Retour au livre<br><span class="glyphicon glyphicon-book"></span></a>
-            </div>
+            <hr><br>
+            <h3>Ajoutez un commentaire</h3>
+            {{ form_start(commentForm) }}
+                <div class="form-group">
+                    {{ form_errors(commentForm.author) }}
+                    {{ form_widget(commentForm.author, { 'attr':  {
+                        'rows': '1',
+                        'class': 'form-control',
+                        'placeholder': 'Entrez votre pseudonyme',
+                        'value': ''
+                    }}) }}
+                    {{ form_errors(commentForm.email) }}
+                    {{ form_widget(commentForm.email, { 'attr':  {
+                        'rows': '1',
+                        'class': 'form-control',
+                        'placeholder': 'Entrez votre Email',
+                        'value': ''
+                    }}) }}
+                    {{ form_errors(commentForm.content) }}
+                    {{ form_widget(commentForm.content, { 'attr':  {
+                        'rows': '4',
+                        'class': 'form-control',
+                        'placeholder': 'Entrez votre commentaire'
+                    }}) }}
+                </div>
+                <div id="btnPublish" class="form-group">
+                    <button type="submit" class="btn btn-primary">Publier <span class="glyphicon glyphicon-share"></span></button>
+                </div>
+            {{ form_end(commentForm) }}
+        </div>
+        <div id="btnComment" class="row">
+            <a class="btn col-xl-2 col-xs-offset-5" href="{{ path('home') }}#accordion">Retour au livre<br><span class="glyphicon glyphicon-book"></span></a>
         </div>
     </div>
 {% endblock %}

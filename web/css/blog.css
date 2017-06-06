@@ -104,6 +104,18 @@ a:hover {
     color: #eee;
 }
 
+#btnRead a:hover {
+    background-color: #113046;
+    border-color: #113046;
+    color: #eee;
+}
+
+#btnComment a:hover {
+    background-color: #113046;
+    border-color: #113046;
+    color: #eee;
+}
+
 .titleComment {
     color: #244a65;
 }
@@ -114,8 +126,24 @@ a:hover {
 
 #commentDesign p {
     padding: 9px;
+    padding-bottom: 22px;
     background-color: #eee;
     border-radius: 4px;
 }
 
+.form-control {
+    margin-bottom: 10px;
+}
+
+#btnPublish button {
+    background-color: #244a65;
+    border-color: #244a65;
+    color: #eee;
+}
+
+#btnPublish button:hover {
+    background-color: #113046;
+    border-color: #113046;
+    color: #eee;
+}
 
