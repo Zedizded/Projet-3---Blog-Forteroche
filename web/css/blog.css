@@ -23,7 +23,8 @@ a:hover {
     height: 505px;
 }
 
-#accordion h3, #accordion h3:active {
+#accordion h3,
+#accordion h3:active {
     font-size: 1.1em;
 }
 
@@ -147,3 +148,23 @@ a:hover {
     color: #eee;
 }
 
+#btnConnect button {
+    background-color: #244a65;
+    border-color: #244a65;
+    color: #eee;
+}
+
+#btnConnect button:hover {
+    background-color: #113046;
+    border-color: #113046;
+    color: #eee;
+}
+
+.navbar-nav>li>a {
+    color: #5e5e5e;
+}
+
+.navbar-nav>li>a:hover,
+.navbar-brand:hover {
+    color: #333;
+}

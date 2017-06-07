@@ -10,8 +10,43 @@
         <title>Billet simple pour l'Alaska | {% block title %}{% endblock %}</title>
     </head>
     <body>
+        <div id="jumbocontent">{% block jumbo %}{% endblock %}</div>
+        <div class="container">
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-target">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="{{ path('home') }}">Billet simple pour l'Alaska</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbar-collapse-target">
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon-user"></span> Bienvenue {{ app.user.username }} <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{ path('logout') }}">Déconnexion</a></li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon-user"></span> Non connecté <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{ path('login') }}">Connexion</a></li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
         <div id="content">{% block content %}{% endblock %}</div>
-
         <footer class="container footer">
             <p><i>Billet simple pour l'Alaska</i> - Jean Forteroche - Tous droits réservés. ©</p>
             <p>Création originale <a href="http://zcomdezign.com"> © ZcOmDeZign</a></p>
@@ -19,6 +54,8 @@
     </body>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- JavaScript Boostrap plugin -->
+    <script src="{{ asset('/lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
     <script type="text/javascript">
         $('a[href^="#"]').click(function(){  
