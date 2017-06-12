@@ -7,7 +7,7 @@ use Projet3BlogForteroche\Domain\Article;
 class ArticleDAO extends DAO
 {
     /**
-     * Return a list of all articles, sorted by date (oldest first).
+     * Return a list of all articles, sorted by date (most recent last).
      *
      * @return array A list of all articles.
      */
@@ -40,7 +40,31 @@ class ArticleDAO extends DAO
         else
             throw new \Exception("No article matching id " . $id);
     }
+    
+    /**
+     * Saves an article into the database.
+     *
+     * @param \Projet3BlogForteroche\Domain\Article $article The article to save
+     */
+    public function save(Article $article) {
+        $articleData = array(
+            'art_title' => $article->getTitle(),
+            'art_content' => $article->getContent(),
+            'art_date' => $article->getDate(),
+            );
 
+        if ($article->getId()) {
+            // The article has already been saved : update it
+            $this->getDb()->update('t_article', $articleData, array('art_id' => $article->getId()));
+        } else {
+            // The article has never been saved : insert it
+            $this->getDb()->insert('t_article', $articleData);
+            // Get the id of the newly created article and set it on the entity.
+            $id = $this->getDb()->lastInsertId();
+            $article->setId($id);
+        }
+    }
+    
     /**
      * Creates an Article object based on a DB row.
      *
@@ -54,5 +78,15 @@ class ArticleDAO extends DAO
         $article->setContent($row['art_content']);
         $article->setDate($row['art_date_fr']);
         return $article;
+    }
+
+    /**
+     * Removes an article from the database.
+     *
+     * @param integer $id The article id.
+     */
+    public function delete($id) {
+        // Delete the article
+        $this->getDb()->delete('t_article', array('art_id' => $id));
     }
 }

@@ -6,8 +6,8 @@
     <div id="jumbocontent">
         <div id="jumbo" class="jumbotron">
             <div class="container">
-                <h1>Le livre en ligne</h1>
-                <p>By Jean Forteroche</p>
+                <h1>Billet simple pour l'Alaska</h1>
+                <p>Le livre en ligne by Jean Forteroche</p>
             </div>
             <div id="btnRead" class="row">
                 <a id="spyingScroll" href="#accordion" class="btn btn-lg col-xl-2 col-xs-offset-5">Très bonne lecture...<br><span class="glyphicon glyphicon-circle-arrow-down"></span></a>
@@ -24,8 +24,8 @@
                 <p>{{ article.content|nl2br}}</p>
                 <small class="pull-right">Publié le {{ article.date }} par Jean Forteroche</small>
                 <br><hr>
-                <div id="btnComment" class="row col-xs-12">
-                <a class="btn col-xl-2 col-xs-offset-5" href="{{ path('article', { 'id': article.id }) }}">Commentaires<br><span class="glyphicon glyphicon-comment"></span></a>
+                <div class="row col-xs-12">
+                <a class="btn col-xl-2 col-xs-offset-5 btnBlue" href="{{ path('article', { 'id': article.id }) }}">Commentaires<br><span class="glyphicon glyphicon-comment"></span></a>
                 </div>
             </article>
         {% endfor %}

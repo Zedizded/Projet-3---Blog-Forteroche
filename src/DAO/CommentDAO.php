@@ -14,7 +14,7 @@ class CommentDAO extends DAO
     public function setArticleDAO(ArticleDAO $articleDAO) {
         $this->articleDAO = $articleDAO;
     }
-
+    
     /**
      * Return a list of all comments for an article, sorted by date (most recent last).
      *
@@ -28,7 +28,7 @@ class CommentDAO extends DAO
 
         // art_id is not selected by the SQL query
         // The article won't be retrieved during domain objet construction
-        $sql = "select com_id, com_content, com_author, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr from t_comment where art_id=? order by com_id";
+        $sql = "select com_id, com_author, com_content, com_email, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged from t_comment where art_id=? order by com_id";
         $result = $this->getDb()->fetchAll($sql, array($articleId));
 
         // Convert query result to an array of domain objects
@@ -43,6 +43,41 @@ class CommentDAO extends DAO
         return $comments;
     }
     
+    /**
+     * Returns a list of all comments, sorted by date (most recent first).
+     *
+     * @return array A list of all comments.
+     */
+    public function findAll() {
+        $sql = "select com_id, com_author, com_content, com_email, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged from t_comment order by com_id desc";
+        $result = $this->getDb()->fetchAll($sql);
+
+        // Convert query result to an array of domain objects
+        $entities = array();
+        foreach ($result as $row) {
+            $id = $row['com_id'];
+            $entities[$id] = $this->buildDomainObject($row);
+        }
+        return $entities;
+    }
+    
+    /**
+     * Returns a comment matching the supplied id.
+     *
+     * @param integer $id The comment id
+     *
+     * @return \Projet3BlogForteroche\Domain\Comment|throws an exception if no matching comment is found
+     */
+    public function find($id) {
+        $sql = "select com_id, com_author, com_email, com_content, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged, art_id from t_comment where com_id=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
+
+        if ($row)
+            return $this->buildDomainObject($row);
+        else
+            throw new \Exception("No comment matching id " . $id);
+    }
+
     /**
      * Saves a comment into the database.
      *
@@ -69,7 +104,7 @@ class CommentDAO extends DAO
             $comment->setId($id);
         }
     }
-
+    
     /**
      * Creates an Comment object based on a DB row.
      *
@@ -81,6 +116,7 @@ class CommentDAO extends DAO
         $comment->setId($row['com_id']);
         $comment->setContent($row['com_content']);
         $comment->setAuthor($row['com_author']);
+        $comment->setEmail($row['com_email']);
         $comment->setDate($row['com_date_fr']);
 
         if (array_key_exists('art_id', $row)) {
@@ -91,4 +127,24 @@ class CommentDAO extends DAO
         }
         return $comment;
     }
+
+    /**
+     * Removes a comment from the database.
+     *
+     * @param @param integer $id The comment id
+     */
+    public function delete($id) {
+        // Delete the comment
+        $this->getDb()->delete('t_comment', array('com_id' => $id));
+    }
+    
+    /**
+     * Removes all comments for an article
+     *
+     * @param $articleId The id of the article
+     */
+    public function deleteAllByArticle($articleId) {
+        $this->getDb()->delete('t_comment', array('art_id' => $articleId));
+    }
+    
 }

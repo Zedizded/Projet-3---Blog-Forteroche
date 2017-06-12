@@ -38,13 +38,13 @@
                         'placeholder': 'Entrez votre commentaire'
                     }}) }}
                 </div>
-                <div id="btnPublish" class="form-group">
-                    <button type="submit" class="btn">Publier <span class="glyphicon glyphicon-share"></span></button>
+                <div class="form-group">
+                    <button type="submit" class="btn btnBlue">Publier <span class="glyphicon glyphicon-share"></span></button>
                 </div>
             {{ form_end(commentForm) }}
         </div>
-        <div id="btnComment" class="row">
-            <a class="btn col-xl-2 col-xs-offset-5" href="{{ path('home') }}#accordion">Retour au livre<br><span class="glyphicon glyphicon-book"></span></a>
+        <div class="row">
+            <a class="btn col-xl-2 col-xs-offset-5 btnBlue" href="{{ path('home') }}#accordion">Retour au livre<br><span class="glyphicon glyphicon-book"></span></a>
         </div>
     </div>
 {% endblock %}

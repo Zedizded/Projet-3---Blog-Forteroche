@@ -5,8 +5,9 @@
     <div class="container">
         <h2 class="text-center">{{ block('title') }}</h2>
         {% if error %}
-        <div class="alert alert-danger">
-            <strong>Le nom d'utilisateur ou le mot de passe est erroné</strong> {{ error }}
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <strong>Le nom d'utilisateur ou le mot de passe est incorrect</strong>
         </div>
         {% endif %}
         <div class="well">
@@ -22,8 +23,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div id="btnConnect" class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-                        <button type="submit" class="btn col-xl-2 col-xs-offset-4">Se connecter<br><span class="glyphicon glyphicon-log-in"></span></button>
+                    <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                        <button type="submit" class="btn col-xl-2 col-xs-offset-4 btnBlue">Se connecter<br><span class="glyphicon glyphicon-log-in"></span></button>
                     </div>
                 </div>
             </form>

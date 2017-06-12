@@ -15,7 +15,7 @@ a:hover {
     border-top: 1px solid #ccc;
     padding-top: 10px;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 40px;
     color: #7c7c7c;
 }
 
@@ -35,15 +35,18 @@ a:hover {
 }
 
 .jumbotron h1 {
-    font-size: 7em;
+    font-size: 6em;
     color: #fff;
     text-shadow: 1px 2px 3px rgba(0,0,0, 0.5);
     letter-spacing: 2.9px;
+    margin: 29px 0;
 }
 
 .jumbotron p {
     font-size: 3.5em;
     letter-spacing: 2.9px;
+    color: #fff;
+    text-shadow: 0.5px 0.5px 2px rgba(0,0,0, 0.5);
 }
 
 #jumbo {
@@ -99,21 +102,51 @@ a:hover {
     color: #eee;
 }
 
-#btnComment a {
-    background-color: #244a65;
-    border-color: #244a65;
-    color: #eee;
-}
-
 #btnRead a:hover {
     background-color: #113046;
     border-color: #113046;
     color: #eee;
 }
 
-#btnComment a:hover {
+.btnBlue {
+    background-color: #244a65;
+    border-color: #244a65;
+    color: #eee;
+}
+
+.btnBlue:hover,
+.btnBlue:active,
+.btnBlue:focus {
     background-color: #113046;
     border-color: #113046;
+    color: #eee;
+}
+
+.btnGreen {
+    background-color: #0d8870;
+    border-color: #0d8870;
+    color: #eee;
+}
+
+.btnGreen:hover,
+.btnGreen:active,
+.btnGreen:focus {
+    background-color: #094a3d;
+    border-color: #094a3d;
+    color: #eee;
+}
+
+.btnRed {
+    background-color: #a70202;
+    border-color: #a70202;
+    color: #eee;
+}
+
+.btnRed:hover,
+.btnRed:active,
+.btnRed:focus {
+    background-color: #880d0d;
+    border-color: #880d0d;
     color: #eee;
 }
 
@@ -136,35 +169,26 @@ a:hover {
     margin-bottom: 10px;
 }
 
-#btnPublish button {
-    background-color: #244a65;
-    border-color: #244a65;
-    color: #eee;
+.navbar-default .navbar-brand,
+.navbar-default .navbar-nav>li>a {
+    color: #368a91;
 }
 
-#btnPublish button:hover {
-    background-color: #113046;
-    border-color: #113046;
-    color: #eee;
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-nav>li>a:hover {
+    color: #244a65;
 }
 
-#btnConnect button {
-    background-color: #244a65;
-    border-color: #244a65;
-    color: #eee;
+.nav-tabs {
+    margin-bottom: 29px;
 }
 
-#btnConnect button:hover {
-    background-color: #113046;
-    border-color: #113046;
-    color: #eee;
+.text-center {
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
 
-.navbar-nav>li>a {
-    color: #5e5e5e;
-}
-
-.navbar-nav>li>a:hover,
-.navbar-brand:hover {
-    color: #333;
+.adminTable {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
