@@ -38,7 +38,7 @@
                     {% for article in articles %}
                     <tr>
                         <td>{{ article.title }}</td>
-                        <td>{{ article.content | truncate(60) }}</td>
+                        <td>{{ article.content | striptags | truncate(60) }}</td>
                         <td>
                             <a href="{{ path('admin_article_edit', { 'id': article.id }) }}" class="btn btn-xs btnGreen" title="Éditer"><span class="glyphicon glyphicon-edit"></span></a>
                             <button type="button" class="btn btn-xs btnRed" title="Supprimer" data-toggle="modal" data-target="#articleDialog{{ article.id }}"><span class="glyphicon glyphicon-remove"></span>
@@ -72,12 +72,11 @@
         </div>
         <div class="tab-pane fade adminTable" id="comments">
             {% if comments %}
-            {% for article in articles %}
         <div class="table-responsive">
             <table class="table table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th>{{ article.title | truncate(11, false, '') }}</th>
+                        <th>Chapitre</th>
                         <th>Auteur</th>
                         <th>Email</th>
                         <th>Contenu</th>
@@ -86,7 +85,7 @@
                 </thead>
                 {% for comment in comments %}
                 <tr>
-                    <td></td>
+                    <td>{{ comment.article.title | truncate(11, false, '') }}</td>
                     <td>{{ comment.author }}</td>
                     <td>{{ comment.email }}</td>
                     <td>{{ comment.content | truncate(60) }}</td>
@@ -113,7 +112,6 @@
                         </div><!-- /.modal -->
                     </td>
                 </tr>
-                {% endfor %}
                 {% endfor %}
             </table>
         </div>

@@ -9,7 +9,8 @@
             <h3>Commentaires</h3>
             {% for comment in comments %}
                 <p class="col-xl-12"><strong>{{ comment.author }} a dit :</strong> {{ comment.content|nl2br }}<br>
-                <small class="pull-right">Publié le {{ comment.date }} par {{ comment.author }}</small></p><br>
+                <small class="pull-right">Publié le {{ comment.date }} par {{ comment.author }}</small><br><button type="submit" class="btn btn-xs pull-right btnBlue mt-9 mb-9" title="Répondre à ce commentaire">Répondre <span class="glyphicon glyphicon-pencil"></span></button><br><br><button type="submit" class="btn btn-xs pull-right btnRed" title="Signaler ce commentaire comme abusif">Abusif <span class="glyphicon glyphicon-ban-circle"></span></button><br></p><br>
+                
             {% else %}
                 <p class="col-xl-12">Il n'y a pas encore de commentaire sur ce chapitre. Souhaitez-vous être le premier à laisser un commentaire ?</p><br>
             {% endfor %}

@@ -57,7 +57,8 @@
     </body>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <!-- JavaScript Boostrap plugin -->
+    <script src="{{ asset('/lib/tinymce/js/tinymce/tinymce.min.js?apiKey=qb5hi2mt9e0y5yp59572ivy5r0wnxw56q54a1uxpxsppdbo4') }}"></script>
+    <script src="{{ asset('/lib/tinymce/langs/fr_FR.js') }}"></script>
     <script src="{{ asset('/lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
     <script>
@@ -82,4 +83,12 @@
             });
         });
     </script>
+    
+    <script>
+        tinymce.init({
+            selector: '#article_content',
+            language: 'fr_FR'
+        });
+    </script>
+    
 </html>

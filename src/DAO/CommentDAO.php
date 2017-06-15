@@ -28,7 +28,7 @@ class CommentDAO extends DAO
 
         // art_id is not selected by the SQL query
         // The article won't be retrieved during domain objet construction
-        $sql = "select com_id, com_author, com_content, com_email, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged from t_comment where art_id=? order by com_id";
+        $sql = "select com_id, com_author, com_email, com_content, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged, art_id from t_comment where art_id=? order by com_id";
         $result = $this->getDb()->fetchAll($sql, array($articleId));
 
         // Convert query result to an array of domain objects
@@ -49,7 +49,7 @@ class CommentDAO extends DAO
      * @return array A list of all comments.
      */
     public function findAll() {
-        $sql = "select com_id, com_author, com_content, com_email, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged from t_comment order by com_id desc";
+        $sql = "select com_id, com_author, com_email, com_content, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged, art_id from t_comment order by art_id";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects

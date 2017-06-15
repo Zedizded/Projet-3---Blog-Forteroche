@@ -21,7 +21,7 @@
         {% for article in articles %}
             <h3>{{ article.title }}</h3>
             <article>
-                <p>{{ article.content|nl2br}}</p>
+                <p>{{ article.content | raw | nl2br}}</p>
                 <small class="pull-right">Publié le {{ article.date }} par Jean Forteroche</small>
                 <br><hr>
                 <div class="row col-xs-12">

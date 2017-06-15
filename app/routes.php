@@ -54,6 +54,8 @@ $app->get('/admin', function() use ($app) {
 // Add a new article
 $app->match('/admin/article/add', function(Request $request) use ($app) {
     $article = new Article();
+    $content = ' ';
+    $article->setContent($content);
     $newArticleDate = new DateTime('now');
     $article->setDate($newArticleDate->format('Y-m-d H:i:s'));
     $articleForm = $app['form.factory']->create(ArticleType::class, $article);

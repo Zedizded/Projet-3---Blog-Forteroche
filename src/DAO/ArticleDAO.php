@@ -52,7 +52,7 @@ class ArticleDAO extends DAO
             'art_content' => $article->getContent(),
             'art_date' => $article->getDate(),
             );
-
+    
         if ($article->getId()) {
             // The article has already been saved : update it
             $this->getDb()->update('t_article', $articleData, array('art_id' => $article->getId()));

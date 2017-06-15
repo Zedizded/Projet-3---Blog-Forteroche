@@ -11,6 +11,14 @@ a:hover {
     color:#244a65;
 }
 
+.mt-9 {
+    margin-top: 9px;
+}
+
+.mb-9 {
+    margin-top: 9px;
+}
+
 .footer {
     border-top: 1px solid #ccc;
     padding-top: 10px;
@@ -191,4 +199,8 @@ a:hover {
 .adminTable {
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+#mceu_11 {
+    border-radius: 4px;
 }
