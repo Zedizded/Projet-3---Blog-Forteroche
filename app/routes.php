@@ -13,7 +13,7 @@ $app->get('/', function () use ($app) {
 })->bind('home');
 
 // Comments details with add comments
-$app->match('/article/{id}', function ($id, Request $request) use ($app) {
+$app->match('/comment/chapter{id}', function ($id, Request $request) use ($app) {
     $article = $app['dao.article']->find($id);
     $comment = new Comment();
     $comment->setArticle($article);
@@ -24,15 +24,29 @@ $app->match('/article/{id}', function ($id, Request $request) use ($app) {
     $commentForm->handleRequest($request);
     if ($commentForm->isSubmitted() && $commentForm->isValid()) {
         $app['dao.comment']->save($comment);
+        $app['session']->getFlashBag()->add('success', 'Le commentaire a bien été ajouté');
         }
     $commentFormView = $commentForm->createView();
     $comments = $app['dao.comment']->findAllByArticle($id);
-
     return $app['twig']->render('comment.html.twig', array(
         'article' => $article, 
         'comments' => $comments,
         'commentForm' => $commentFormView));
 })->bind('article');
+
+// Flag a comment
+$app->get('/comment/{id}/flagged', function ($id, Request $request) use ($app) {
+    $comment = $app['dao.comment']->find($id);
+    $comment->setFlagged(1);
+    $newCommentDate = new DateTime('now');
+    $comment->setDate($newCommentDate->format('Y-m-d H:i:s'));
+    $app['dao.comment']->save($comment);
+    $app['session']->getFlashBag()->add('success', 'Le commentaire a bien été signalé');
+    $article = $comment->getArticle();
+    $articleId = $article->getId();
+    return $app->redirect($app['url_generator']->generate('article' ,array(
+        'id' => $articleId)));
+})->bind('comment_flagged');
 
 // Login form
 $app->get('/login', function(Request $request) use ($app) {
@@ -43,7 +57,7 @@ $app->get('/login', function(Request $request) use ($app) {
 })->bind('login');
 
 // Admin home page
-$app->get('/admin', function() use ($app) {
+$app->match('/admin', function() use ($app) {
     $articles = $app['dao.article']->findAll();
     $comments = $app['dao.comment']->findAll();
     return $app['twig']->render('admin.html.twig', array(

@@ -49,7 +49,7 @@ class CommentDAO extends DAO
      * @return array A list of all comments.
      */
     public function findAll() {
-        $sql = "select com_id, com_author, com_email, com_content, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged, art_id from t_comment order by art_id";
+        $sql = "select com_id, com_author, com_email, com_content, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged, art_id from t_comment order by com_flagged desc, art_id";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects
@@ -104,11 +104,12 @@ class CommentDAO extends DAO
             $comment->setId($id);
         }
     }
-    
+
     /**
      * Creates an Comment object based on a DB row.
      *
      * @param array $row The DB row containing Comment data.
+     *
      * @return \Projet3BlogForteroche\Domain\Comment
      */
     protected function buildDomainObject(array $row) {
@@ -118,6 +119,7 @@ class CommentDAO extends DAO
         $comment->setAuthor($row['com_author']);
         $comment->setEmail($row['com_email']);
         $comment->setDate($row['com_date_fr']);
+        $comment->setFlagged($row['com_flagged']);
 
         if (array_key_exists('art_id', $row)) {
             // Find and set the associated article

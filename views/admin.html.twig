@@ -84,34 +84,65 @@
                     </tr>
                 </thead>
                 {% for comment in comments %}
-                <tr>
-                    <td>{{ comment.article.title | truncate(11, false, '') }}</td>
-                    <td>{{ comment.author }}</td>
-                    <td>{{ comment.email }}</td>
-                    <td>{{ comment.content | truncate(60) }}</td>
-                    <td>
-                        <a href="{{ path('admin_comment_edit', { 'id': comment.id }) }}" class="btn btn-xs btnGreen" title="Éditer"><span class="glyphicon glyphicon-edit"></span></a>
-                        <button type="button" class="btn btn-xs btnRed" title="Supprimer" data-toggle="modal" data-target="#commentDialog{{ comment.id }}"><span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                        <div class="modal fade" id="commentDialog{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="myModalLabel">Confirmation nécessaire</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        Voulez-vous vraiment supprimer ce commentaire ?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                        <a href="{{ path('admin_comment_delete', { 'id': comment.id }) }}" class="btn btnRed">Confirmer</a>
-                                    </div>
-                                </div><!-- /.modal-content -->
-                            </div><!-- /.modal-dialog -->
-                        </div><!-- /.modal -->
-                    </td>
-                </tr>
+                    {% if comment.flagged %}
+                    <tr style="color:#880d0d;" onmouseover="this.style.backgroundColor='#fdd3d3';" onmouseout="this.style.backgroundColor='';">
+                        <td>{{ comment.article.title | truncate(11, false, '') }}</td>
+                        <td>{{ comment.author }}</td>
+                        <td>{{ comment.email }}</td>
+                        <td>{{ comment.content | truncate(60) }}</td>
+                        <td>
+                            <a href="{{ path('admin_comment_edit', { 'id': comment.id }) }}" class="btn btn-xs btnGreen" title="Éditer"><span class="glyphicon glyphicon-edit"></span></a>
+                            <button type="button" class="btn btn-xs btnRed" title="Supprimer" data-toggle="modal" data-target="#commentDialog{{ comment.id }}"><span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                            <div class="modal fade" id="commentDialog{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Confirmation nécessaire</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            Voulez-vous vraiment supprimer ce commentaire ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                            <a href="{{ path('admin_comment_delete', { 'id': comment.id }) }}" class="btn btnRed">Confirmer</a>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td>{{ comment.article.title | truncate(11, false, '') }}</td>
+                        <td>{{ comment.author }}</td>
+                        <td>{{ comment.email }}</td>
+                        <td>{{ comment.content | truncate(60) }}</td>
+                        <td>
+                            <a href="{{ path('admin_comment_edit', { 'id': comment.id }) }}" class="btn btn-xs btnGreen" title="Éditer"><span class="glyphicon glyphicon-edit"></span></a>
+                            <button type="button" class="btn btn-xs btnRed" title="Supprimer" data-toggle="modal" data-target="#commentDialog{{ comment.id }}"><span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                            <div class="modal fade" id="commentDialog{{ comment.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Confirmation nécessaire</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            Voulez-vous vraiment supprimer ce commentaire ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                            <a href="{{ path('admin_comment_delete', { 'id': comment.id }) }}" class="btn btnRed">Confirmer</a>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                        </td>
+                    </tr>
+                    {% endif %}
                 {% endfor %}
             </table>
         </div>

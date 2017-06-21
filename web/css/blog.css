@@ -16,7 +16,15 @@ a:hover {
 }
 
 .mb-9 {
-    margin-top: 9px;
+    margin-bottom: 9px;
+}
+
+.ml-9 {
+    margin-left: 9px;
+}
+
+.mr-9 {
+    margin-right: 9px;
 }
 
 .footer {
@@ -162,13 +170,14 @@ a:hover {
     color: #244a65;
 }
 
-#commentDesign h3 {
+.commentDesignTitle {
     color: #7a7a7a;
 }
 
-#commentDesign p {
+.commentDesignContent {
+    margin-bottom: 29px;
     padding: 9px;
-    padding-bottom: 22px;
+    padding-bottom: 38px;
     background-color: #eee;
     border-radius: 4px;
 }

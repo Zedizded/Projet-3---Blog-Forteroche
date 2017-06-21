@@ -5,17 +5,26 @@
 {% block content %}
     <div class="container">
         <h2 class="titleComment">{{ article.title }}</h2><hr>
-        <div id="commentDesign">
-            <h3>Commentaires</h3>
+        {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ flashMessage }}
+        </div>
+        {% endfor %}
+        <div class="col-xl-12">
+            <h3 class="commentDesignTitle">Commentaires</h3>
             {% for comment in comments %}
-                <p class="col-xl-12"><strong>{{ comment.author }} a dit :</strong> {{ comment.content|nl2br }}<br>
-                <small class="pull-right">Publié le {{ comment.date }} par {{ comment.author }}</small><br><button type="submit" class="btn btn-xs pull-right btnBlue mt-9 mb-9" title="Répondre à ce commentaire">Répondre <span class="glyphicon glyphicon-pencil"></span></button><br><br><button type="submit" class="btn btn-xs pull-right btnRed" title="Signaler ce commentaire comme abusif">Abusif <span class="glyphicon glyphicon-ban-circle"></span></button><br></p><br>
-                
+            <div class="commentDesignContent">
+                <p><strong>{{ comment.author }} a dit :</strong> {{ comment.content|nl2br }}</p><br>
+                <small class="pull-right">Publié le {{ comment.date }} par {{ comment.author }}</small><br>
+                <a href="{{ path('comment_flagged', { 'id': comment.id }) }}" type="button" class="btn btn-xs pull-right btnRed mt-9" title="Signaler ce commentaire comme abusif">Abusif <span class="glyphicon glyphicon-ban-circle"></span></a>
+                <a href="#" type="button" class="btn btn-xs pull-right btnBlue mt-9 mr-9" title="Répondre à ce commentaire">Répondre <span class="glyphicon glyphicon-pencil"></span></a>
+            </div>
             {% else %}
-                <p class="col-xl-12">Il n'y a pas encore de commentaire sur ce chapitre. Souhaitez-vous être le premier à laisser un commentaire ?</p><br>
+            <p class="col-xl-12">Il n'y a pas encore de commentaire sur ce chapitre. Souhaitez-vous être le premier à laisser un commentaire ?</p><br>
             {% endfor %}
             <hr><br>
-            <h3>Ajoutez un commentaire</h3>
+            <h3 class="commentDesignTitle">Ajoutez un commentaire</h3>
             {{ form_start(commentForm) }}
                 <div class="form-group">
                     {{ form_errors(commentForm.author) }}
