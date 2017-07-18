@@ -53,6 +53,13 @@ class Comment
      */
     private $article;
 
+    /**
+     * Associated comment.
+     *
+     * @var integer
+     */
+    private $comParent;
+    
     public function getId() {
         return $this->id;
     }
@@ -113,6 +120,15 @@ class Comment
 
     public function setArticle(Article $article) {
         $this->article = $article;
+        return $this;
+    }
+
+    public function getComParent() {
+        return $this->comParent;
+    }
+
+    public function setComParent($comParent) {
+        $this->comParent = $comParent;
         return $this;
     }
 }

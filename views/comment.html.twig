@@ -1,60 +1,197 @@
-{% extends "layout.html.twig" %}
+{% extends "layout_comment.html.twig" %}
 
 {% block title %}Commentaire sur le {{ article.title }}{% endblock %}
 
 {% block content %}
-    <div class="container">
+   
+    <div id="backTop" class="modal-body">
+        <a href="{{ path('home') }}" class="close">&times;</a>       
         <h2 class="titleComment">{{ article.title }}</h2><hr>
+        
         {% for flashMessage in app.session.flashbag.get('success') %}
-        <div class="alert alert-success alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-            {{ flashMessage }}
-        </div>
-        {% endfor %}
-        <div class="col-xl-12">
-            <h3 class="commentDesignTitle">Commentaires</h3>
-            {% for comment in comments %}
-            <div class="commentDesignContent">
-                <p><strong>{{ comment.author }} a dit :</strong> {{ comment.content|nl2br }}</p><br>
-                <small class="pull-right">Publié le {{ comment.date }} par {{ comment.author }}</small><br>
-                <a href="{{ path('comment_flagged', { 'id': comment.id }) }}" type="button" class="btn btn-xs pull-right btnRed mt-9" title="Signaler ce commentaire comme abusif">Abusif <span class="glyphicon glyphicon-ban-circle"></span></a>
-                <a href="#" type="button" class="btn btn-xs pull-right btnBlue mt-9 mr-9" title="Répondre à ce commentaire">Répondre <span class="glyphicon glyphicon-pencil"></span></a>
+           
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                {{ flashMessage }}
             </div>
+            
+        {% endfor %}
+
+        <div class="col-xl-12">
+            <h3 class="commentDesignTitle">Commentaires</h3><br>
+            {% if comments == false %}
+                <p class="col-xl-12">Il n'y a pas encore de commentaire sur ce chapitre. Souhaitez-vous être le premier à laisser un commentaire ?</p><br>
             {% else %}
-            <p class="col-xl-12">Il n'y a pas encore de commentaire sur ce chapitre. Souhaitez-vous être le premier à laisser un commentaire ?</p><br>
-            {% endfor %}
+
+                {% for comment in comments %}
+                    {% if comment.comParent == 0 %}
+                       
+                        <div class="commentDesignContent">
+                           
+                            <div id="signalComment{{comment.id}}" class="alert alert-success alert-dismissible col-xs-12" style="display: none">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                <p><strong>Le commentaire a bien été signalé</strong></p>
+                            </div>
+                            
+                            <p><strong>{{ comment.author }} a dit :</strong><br> {{ comment.content|nl2br }}</p><br>
+                            <small class="pull-right">Publié le {{ comment.date }} par {{ comment.author }}</small><br>
+                            <a onclick="signalAbuse({{comment.id}})" class="btn btn-xs pull-right btnRed mt-9" title="Signaler ce commentaire comme abusif">Abusif <span class="glyphicon glyphicon-ban-circle"></span></a>
+                            <a type="button" onclick="deployAnswer({{comment.id}})" class="btn btn-xs pull-right btnBlue mt-9 mr-9" title="Répondre à ce commentaire">Répondre <span class="glyphicon glyphicon-pencil"></span></a>
+                            
+                            <div class="col-xs-12" style="display: none" id="hidden-comment-{{comment.id}}">
+                                <div class="formComment">
+                                    <button id="closeForm{{comment.id}}" type="button" class="close">&times;</button>
+                                    
+                                    <div id="emptyFieldComment{{comment.id}}" class="alert alert-warning alert-dismissible col-xs-11" style="display: none">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <p><strong>Tous les champs doivent être renseignés</strong></p>
+                                    </div>
+                                    
+                                    <div id="mailFieldComment{{comment.id}}" class="alert alert-warning alert-dismissible col-xs-11" style="display: none">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <p><strong>Le champ Email doit être valide</strong></p>
+                                    </div>
+                                    
+                                    <form id="response" class="col-xs-12 formResponse">
+                                        <div class="form-group">
+                                            <label for="author">Auteur</label>
+                                            <input id=commentAuthor{{comment.id}} type="text" class="form-control" required="required" placeholder="Votre pseudonyme">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input id=commentEmail{{comment.id}} type="email" class="form-control" required="required" placeholder="Votre Email">
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="content">Message</label>
+                                            <textarea id=commentContent{{comment.id}} type="textarea" class="form-control mb-9" required="required" rows="4" placeholder="Votre commentaire"></textarea>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <a onclick="answerComment({{comment.id}})" class="btn btnBlue">Publier <span class="glyphicon glyphicon-share"></span></a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% for subComment in comments %}
+                            {% if subComment.comParent == comment.id %}
+                            
+                            <div class="commentDesignContent ml-50">
+                               
+                                <div id="signalSubComment{{subComment.id}}" class="alert alert-success alert-dismissible col-xs-12" style="display: none">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <p><strong>Le commentaire a bien été signalé</strong></p>
+                                </div>
+                                
+                                <p><strong>{{ subComment.author }} a répondu au commentaire de {{ comment.author }} pour lui dire :</strong><br> {{ subComment.content|nl2br }}</p><br>
+                                <small class="pull-right">Publié le {{ subComment.date }} par {{ subComment.author }}</small><br>
+                                <a onclick="signalAbuse({{subComment.id}})" class="btn btn-xs pull-right btnRed mt-9" title="Signaler ce commentaire comme abusif">Abusif <span class="glyphicon glyphicon-ban-circle"></span></a>
+                                <a type="button" onclick="deployAnswer({{subComment.id}})" class="btn btn-xs pull-right btnBlue mt-9 mr-9" title="Répondre à ce sous commentaire">Répondre <span class="glyphicon glyphicon-pencil"></span></a>
+                                
+                                <div class="col-xs-12" style="display: none" id="hidden-subComment-{{subComment.id}}">
+                                    <div class="formComment">
+                                        <button id="closeSubForm{{subComment.id}}" type="button" class="close">&times;</button>
+                                        
+                                        <div id="emptyFieldSubComment{{subComment.id}}" class="alert alert-warning alert-dismissible col-xs-11" style="display: none">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                            <p><strong>Tous les champs doivent être renseignés</strong></p>
+                                        </div>
+                                        
+                                        <div id="mailFieldSubComment{{subComment.id}}" class="alert alert-warning alert-dismissible col-xs-11" style="display: none">
+                                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                            <p><strong>Le champ Email doit être valide</strong></p>
+                                        </div>
+
+                                        <form id="subResponse" class="col-xs-12 formResponse">
+                                            <div class="form-group">
+                                                <label for="author">Auteur</label>
+                                                <input id=commentAuthor{{subComment.id}} type="text" class="form-control" required="required" placeholder="Votre pseudonyme">
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <input id=commentEmail{{subComment.id}} type="email" class="form-control" required="required" placeholder="Votre Email">
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="content">Message</label>
+                                                <textarea id=commentContent{{subComment.id}} type="textarea" class="form-control mb-9" required="required" rows="4" placeholder="Votre réponse"></textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <a onclick="answerComment({{subComment.id}})" class="btn btnBlue">Publier <span class="glyphicon glyphicon-share"></span></a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div> 
+                                
+                            {% for subSubComment in comments %}
+                                {% if subSubComment.comParent == subComment.id %}
+                                
+                                <div class="commentDesignContent ml-100">
+                                   
+                                    <div id="signalSubSubComment{{subSubComment.id}}" class="alert alert-success alert-dismissible col-xs-12" style="display: none">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <p><strong>Le commentaire a bien été signalé</strong></p>
+                                    </div>
+                                    
+                                    <p><strong>{{ subSubComment.author }} a répondu à la réponse de {{ subComment.author }} pour lui dire :</strong><br> {{ subSubComment.content|nl2br }}</p><br>
+                                    <small class="pull-right">Publié le {{ subSubComment.date }} par {{ subSubComment.author }}</small><br>
+                                    <a onclick="signalAbuse({{subSubComment.id}})" class="btn btn-xs pull-right btnRed mt-9" title="Signaler ce commentaire comme abusif">Abusif <span class="glyphicon glyphicon-ban-circle"></span></a>
+                                </div>                                  
+                                
+                                {% endif %}
+                            {% endfor %}
+                                
+                            {% endif %}
+                        {% endfor %}
+                        
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
             <hr><br>
             <h3 class="commentDesignTitle">Ajoutez un commentaire</h3>
-            {{ form_start(commentForm) }}
+
+            <div id="emptyField" class="alert alert-warning alert-dismissible" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <p><strong>Tous les champs doivent être renseignés</strong></p>
+            </div>
+
+            <div id="mailField" class="alert alert-warning alert-dismissible" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <p><strong>Le champ Email doit être valide</strong></p>
+            </div>
+
+            <form class="col-xs-12">
                 <div class="form-group">
-                    {{ form_errors(commentForm.author) }}
-                    {{ form_widget(commentForm.author, { 'attr':  {
-                        'rows': '1',
-                        'class': 'form-control',
-                        'placeholder': 'Entrez votre pseudonyme',
-                        'value': ''
-                    }}) }}
-                    {{ form_errors(commentForm.email) }}
-                    {{ form_widget(commentForm.email, { 'attr':  {
-                        'rows': '1',
-                        'class': 'form-control',
-                        'placeholder': 'Entrez votre Email',
-                        'value': ''
-                    }}) }}
-                    {{ form_errors(commentForm.content) }}
-                    {{ form_widget(commentForm.content, { 'attr':  {
-                        'rows': '4',
-                        'class': 'form-control',
-                        'placeholder': 'Entrez votre commentaire'
-                    }}) }}
+                    <label for="author">Auteur</label>
+                    <input id=commentAuthor type="text" class="form-control" required="required" placeholder="Votre pseudonyme">
                 </div>
+                
                 <div class="form-group">
-                    <button type="submit" class="btn btnBlue">Publier <span class="glyphicon glyphicon-share"></span></button>
+                    <label for="email">Email</label>
+                    <input id=commentEmail type="email" class="form-control" required="required" placeholder="Votre Email">
                 </div>
-            {{ form_end(commentForm) }}
-        </div>
-        <div class="row">
-            <a class="btn col-xl-2 col-xs-offset-5 btnBlue" href="{{ path('home') }}#accordion">Retour au livre<br><span class="glyphicon glyphicon-book"></span></a>
+                
+                <div class="form-group">
+                    <label for="content">Message</label>
+                    <textarea id=commentContent type="textarea" class="form-control mb-9" required="required" rows="4" placeholder="Votre commentaire"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <a onclick="newComment()" class="btn btnBlue">Publier <span class="glyphicon glyphicon-share"></span></a>
+                </div>
+            </form>
         </div>
     </div>
+    
+    <div class="row">
+        <a class="btn col-xl-2 col-xs-offset-5 btnBlue mb-9" href="{{ path('home') }}">Retour au livre<br><span class="glyphicon glyphicon-book"></span></a>
+    </div>
+
 {% endblock %}

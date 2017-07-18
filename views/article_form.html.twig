@@ -13,7 +13,7 @@
     </div>
     {% endfor %}
 
-    <div class="container well">
+    <div class="well">
     {{ form_start(articleForm, { 'attr': {'class': 'form-horizontal'} }) }}
         <div class="form-group">
             {{ form_label(articleForm.title, null, { 'label_attr':  {
@@ -40,7 +40,8 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-3">
-                <button type="submit" class="btn btnBlue">Enregistrer <span class="glyphicon glyphicon-save"></span></button>
+                <button type="submit" class="btn btnBlue mr-9">Enregistrer <span class="glyphicon glyphicon-save"></span></button>
+                <a href="{{ path('admin') }}" class="btn btnBlue">Accueil <span class="glyphicon glyphicon-home"></span></a>
             </div>
         </div>
     {{ form_end(articleForm) }}

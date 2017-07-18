@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="{{ asset('/lib/jquery/jquery-ui-custom-v1.css') }}" rel="stylesheet">    
+        <link href="{{ asset('/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('/css/blog.css') }}" rel="stylesheet">
+        <link href="{{ asset('/img/favicon.png') }}" rel="icon" type="image/x-icon"/>
+
+        <title>Billet simple pour l'Alaska | {% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        <div id="content">{% block content %}{% endblock %}</div>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{{ asset('/lib/tinymce/js/tinymce/tinymce.min.js?apiKey=qb5hi2mt9e0y5yp59572ivy5r0wnxw56q54a1uxpxsppdbo4') }}"></script>
+    <script src="{{ asset('/lib/tinymce/js/tinymce/langs/fr_FR.js') }}"></script>
+    <script src="{{ asset('/lib/bootstrap/js/bootstrap.min.js') }}"></script>
+    
+</html>

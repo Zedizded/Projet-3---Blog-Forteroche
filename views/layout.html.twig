@@ -7,6 +7,8 @@
         <link href="{{ asset('/lib/jquery/jquery-ui-custom-v1.css') }}" rel="stylesheet">    
         <link href="{{ asset('/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ asset('/css/blog.css') }}" rel="stylesheet">
+        <link href="{{ asset('/img/favicon.png') }}" rel="icon" type="image/x-icon"/>
+
         <title>Billet simple pour l'Alaska | {% block title %}{% endblock %}</title>
     </head>
     <body>
@@ -24,71 +26,242 @@
                     </div>
                     <div class="collapse navbar-collapse" id="navbar-collapse-target">
                         <ul class="nav navbar-nav navbar-right">
+                           
                             {% if app.user and is_granted('ROLE_ADMIN') %}
+                               
                                 <li class="{% if adminMenu is defined %}active{% endif %}"><a href="{{ path('admin') }}"><span class="glyphicon glyphicon-cog"></span> Administration</a></li>
+                                
                             {% endif %}
+                               
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                               
                                 <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <span class="glyphicon glyphicon-user"></span> Bienvenue {{ app.user.username }} <b class="caret"></b></a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <span class="glyphicon glyphicon-user"></span> Bienvenue {{ app.user.username }} <b class="caret"></b></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="{{ path('logout') }}">Déconnexion</a></li>
                                     </ul>
                                 </li>
+                                
                             {% else %}
+                               
                                 <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <span class="glyphicon glyphicon-user"></span> Non connecté <b class="caret"></b></a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <span class="glyphicon glyphicon-user"></span> Non connecté <b class="caret"></b></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="{{ path('login') }}">Connexion</a></li>
                                     </ul>
                                 </li>
+                                
                             {% endif %}
+                            
                         </ul>
                     </div>
                 </div>
             </nav>
         </div>
-        <div id="content">{% block content %}{% endblock %}</div>
+        
+        <div id="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+        
         <footer class="container footer">
             <p><i>Billet simple pour l'Alaska</i> - Jean Forteroche - Tous droits réservés. ©</p>
             <p>Création originale <a href="http://zcomdezign.com"> © ZcOmDeZign</a></p>
         </footer>
+        
     </body>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="{{ asset('/lib/tinymce/js/tinymce/tinymce.min.js?apiKey=qb5hi2mt9e0y5yp59572ivy5r0wnxw56q54a1uxpxsppdbo4') }}"></script>
-    <script src="{{ asset('/lib/tinymce/langs/fr_FR.js') }}"></script>
+    <script src="{{ asset('/lib/tinymce/js/tinymce/langs/fr_FR.js') }}"></script>
     <script src="{{ asset('/lib/bootstrap/js/bootstrap.min.js') }}"></script>
 
+
     <script>
-        $(function() {
-            $('#spyingScroll').on('click', function(e) {
+        $(function () {
+            $('#spyingScroll').on('click', function (e) {
                 e.preventDefault();
                 var hash = this.hash;
                 $('html, body').animate({
                     scrollTop: $(this.hash).offset().top
-                }, 1000, function() {
+                }, 1000, function () {
                     window.location.hash = hash;
                 });
             });
         });
     </script>
-    
+
+
     <script>
-        $(function() {
+        $(function () {
             $("#accordion").accordion({
                 collapsible: true,
                 heightStyle: "fill"
             });
         });
     </script>
-    
+
+
     <script>
         tinymce.init({
             selector: '#article_content',
             language: 'fr_FR'
         });
     </script>
-    
+
+
+    <script>
+        $('.alert').delay(4000).hide('slow');
+    </script>    
+
+
+    <script>
+        
+        var selectedArticle = null;
+
+        $('#commentModal').on('shown.bs.modal', function () {
+            $.get("/allComments", {id: selectedArticle})
+                    .done(function (data) {
+                        $("#modalContent").append(data);
+                    });
+        })
+        
+
+        function checkIfFormValid(id) {
+            
+            var author;
+            var email;
+            var content;
+
+            author = $('#commentAuthor' + id).val();
+            email = $('#commentEmail' + id).val();
+            content = $('#commentContent' + id).val();
+
+            var isValid = true;
+
+            if (author.length == 0 || email.length == 0 || content.length == 0) {
+                isValid = false;
+                    $(function () {
+                        $('#emptyField').show('slow');
+                        $('#emptyField').delay(4000).hide('slow');
+                        $('#emptyFieldComment' + id).show('slow');
+                        $('#emptyFieldComment' + id).delay(4000).hide('slow');
+                        $('#emptyFieldSubComment' + id).show('slow');
+                        $('#emptyFieldSubComment' + id).delay(4000).hide('slow');
+                    });
+                }
+            
+            else {
+
+                if (!validateEmail(email)) {
+                    isValid = false;
+                        $(function () {
+                            $('#mailField').show('slow');
+                            $('#mailField').delay(4000).hide('slow');
+                            $('#mailFieldComment' + id).show('slow');
+                            $('#mailFieldComment' + id).delay(4000).hide('slow');
+                            $('#mailFieldSubComment' + id).show('slow');
+                            $('#mailFieldSubComment' + id).delay(4000).hide('slow');
+                        });
+                    }
+                }
+
+            return isValid;
+        }
+        
+
+        function setSelectedArticle(articleID) {
+            selectedArticle = articleID;
+        }
+        
+
+        function newComment() {
+
+            var author;
+            var email;
+            var content;
+
+            author = $('#commentAuthor').val();
+            email = $('#commentEmail').val();
+            content = $('#commentContent').val();
+
+            var isValid = checkIfFormValid('');
+
+            if (isValid) {
+                $.post('/addComment', {author: author, email: email, content: content, id: selectedArticle})
+                .done(function (data) {
+                    $('#modalContent').html(data);
+                    $('#commentModal').animate({scrollTop: $('#backTop').offset().top}, 2000);
+                    $('.alert').delay(4000).hide('slow');
+                })
+            }
+        }
+        
+
+        function signalAbuse(id) {
+            $.post("/signal", {id: id})
+            .done(function (data) {
+                $(function () {
+                    $('#signalComment' + id).show('slow');
+                    $('#signalComment' + id).delay(4000).hide('slow');
+                    $('#signalSubComment' + id).show('slow');
+                    $('#signalSubComment' + id).delay(4000).hide('slow');
+                    $('#signalSubSubComment' + id).show('slow');
+                    $('#signalSubSubComment' + id).delay(4000).hide('slow');
+                });
+            })
+        }
+        
+
+        function deployAnswer(id) {
+
+            $('#hidden-comment-' + id).show('slow');
+            $('#hidden-subComment-' + id).show('slow');
+            $('#closeForm' + id).click(function() {
+                $('#hidden-comment-' + id).hide('slow');
+            });
+            $('#closeSubForm' + id).click(function() {
+                $('#hidden-subComment-' + id).hide('slow');
+            });
+
+
+        }
+        
+        
+        function answerComment(id) {
+
+            var author;
+            var email;
+            var content;
+
+            author = $('#commentAuthor' + id).val();
+            email = $('#commentEmail' + id).val();
+            content = $('#commentContent' + id).val();
+
+            var isValid = checkIfFormValid(id);
+
+            if (isValid) {
+                $.post("/addComment", {author: author, email: email, content: content, id: selectedArticle, parent: id})
+                .done(function (data) {
+                    $('#modalContent').html(data);
+                    $('#commentModal').animate({scrollTop: $('#backTop').offset().top}, 2000);
+                    $('.alert').delay(4000).hide('slow');
+                })
+            }
+        }
+        
+
+        function validateEmail(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            
+            return re.test(email);
+        }
+        
+    </script>
+
+
 </html>

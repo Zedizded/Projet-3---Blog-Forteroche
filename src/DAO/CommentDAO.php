@@ -28,17 +28,22 @@ class CommentDAO extends DAO
 
         // art_id is not selected by the SQL query
         // The article won't be retrieved during domain objet construction
-        $sql = "select com_id, com_author, com_email, com_content, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged, art_id from t_comment where art_id=? order by com_id";
+        $sql = "select com_id, com_author, com_email, com_content, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged, com_parent_id from t_comment where art_id=? order by com_date";
         $result = $this->getDb()->fetchAll($sql, array($articleId));
 
         // Convert query result to an array of domain objects
         $comments = array();
         foreach ($result as $row) {
             $comId = $row['com_id'];
+            $comParentId = $row['com_parent_id'];
             $comment = $this->buildDomainObject($row);
             // The associated article is defined for the constructed comment
             $comment->setArticle($article);
             $comments[$comId] = $comment;
+            if ($comParentId != 0) {
+                $comments[$comParentId]->children[] = $comment;
+            }
+            
         }
         return $comments;
     }
@@ -49,7 +54,7 @@ class CommentDAO extends DAO
      * @return array A list of all comments.
      */
     public function findAll() {
-        $sql = "select com_id, com_author, com_email, com_content, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged, art_id from t_comment order by com_flagged desc, art_id";
+        $sql = "select com_id, com_author, com_email, com_content, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged, art_id, com_parent_id from t_comment order by com_flagged desc, art_id";
         $result = $this->getDb()->fetchAll($sql);
 
         // Convert query result to an array of domain objects
@@ -69,7 +74,7 @@ class CommentDAO extends DAO
      * @return \Projet3BlogForteroche\Domain\Comment|throws an exception if no matching comment is found
      */
     public function find($id) {
-        $sql = "select com_id, com_author, com_email, com_content, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged, art_id from t_comment where com_id=?";
+        $sql = "select com_id, com_author, com_email, com_content, DATE_FORMAT(com_date, '%d/%m/%Y à %Hh%imin%ss') AS com_date_fr, com_flagged, art_id, com_parent_id from t_comment where com_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
         if ($row)
@@ -90,7 +95,8 @@ class CommentDAO extends DAO
             'com_email' => $comment->getEmail(),
             'com_content' => $comment->getContent(),
             'com_date' => $comment->getDate(),
-            'com_flagged' => $comment->getFlagged()
+            'com_flagged' => $comment->getFlagged(),
+            'com_parent_id' => $comment->getComParent()
             );
 
         if ($comment->getId()) {
@@ -106,6 +112,17 @@ class CommentDAO extends DAO
     }
 
     /**
+     * Update a flagged comment.
+     */
+    public function updateFlag($commentId,$newValue) {
+       $commentData = array(
+           'com_flagged' => $newValue,
+           );
+           // Update the comment
+           $this->getDb()->update('t_comment', $commentData, array('com_id' => $commentId));
+   }    
+    
+    /**
      * Creates an Comment object based on a DB row.
      *
      * @param array $row The DB row containing Comment data.
@@ -120,6 +137,7 @@ class CommentDAO extends DAO
         $comment->setEmail($row['com_email']);
         $comment->setDate($row['com_date_fr']);
         $comment->setFlagged($row['com_flagged']);
+        $comment->setComParent($row['com_parent_id']);
 
         if (array_key_exists('art_id', $row)) {
             // Find and set the associated article
@@ -131,14 +149,32 @@ class CommentDAO extends DAO
     }
 
     /**
-     * Removes a comment from the database.
-     *
-     * @param @param integer $id The comment id
-     */
-    public function delete($id) {
-        // Delete the comment
-        $this->getDb()->delete('t_comment', array('com_id' => $id));
-    }
+      * Removes a comment from the database.
+      *
+      * @param @param integer $id The comment id
+      */
+     public function delete($id) {
+         // Find children
+         $sql = "select * from t_comment where com_parent_id=?";
+         $child = $this->getDb()->fetchAssoc($sql, array($id));
+         
+         if ($child) {
+             $childId = $child['com_id'];
+             
+             // Find subchildren
+             $sql = "select * from t_comment where com_parent_id=?";
+             $subChild = $this->getDb()->fetchAssoc($sql, array($childId));
+
+             if ($subChild) {
+                 $subChildId = $subChild['com_id'];
+                 $this->getDb()->delete('t_comment', array('com_id' => $subChildId));
+             }
+             
+             $this->getDb()->delete('t_comment', array('com_parent_id' => $id));
+         }
+         
+         $this->getDb()->delete('t_comment', array('com_id' => $id));
+     }
     
     /**
      * Removes all comments for an article
@@ -147,6 +183,6 @@ class CommentDAO extends DAO
      */
     public function deleteAllByArticle($articleId) {
         $this->getDb()->delete('t_comment', array('art_id' => $articleId));
-    }
+    }    
     
 }

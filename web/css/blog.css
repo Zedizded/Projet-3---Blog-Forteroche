@@ -27,6 +27,14 @@ a:hover {
     margin-right: 9px;
 }
 
+.ml-50 {
+    margin-left: 50px;
+}
+
+.ml-100 {
+    margin-left: 100px;
+}
+
 .footer {
     border-top: 1px solid #ccc;
     padding-top: 10px;
@@ -111,8 +119,7 @@ a:hover {
 }
 
 #btnRead a {
-    position: absolute;
-    bottom: 100px;
+    margin-top: 129px;
     background-color: #244a65;
     border-color: #244a65;
     color: #eee;
@@ -175,11 +182,10 @@ a:hover {
 }
 
 .commentDesignContent {
-    margin-bottom: 29px;
+    margin-bottom: 9px;
     padding: 9px;
-    padding-bottom: 38px;
-    background-color: #eee;
-    border-radius: 4px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid #244a65;
 }
 
 .form-control {
@@ -212,4 +218,19 @@ a:hover {
 
 #mceu_11 {
     border-radius: 4px;
+}
+
+.formResponse {
+    margin-top: 29px;
+    margin-bottom: 29px;
+}
+
+.formComment {
+    margin-top: 29px;
+}
+
+#response,
+#subResponse {
+    border-bottom: 1px solid #244a65;
+    
 }
