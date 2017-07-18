@@ -234,3 +234,8 @@ a:hover {
     border-bottom: 1px solid #244a65;
     
 }
+
+#errorPanel {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}

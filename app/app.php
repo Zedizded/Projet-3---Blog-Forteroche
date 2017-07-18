@@ -44,6 +44,11 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
 $app->register(new Silex\Provider\FormServiceProvider());
 $app->register(new Silex\Provider\LocaleServiceProvider());
 $app->register(new Silex\Provider\TranslationServiceProvider());
+$app->register(new Silex\Provider\MonologServiceProvider(), array(
+    'monolog.logfile' => __DIR__.'/../var/logs/blogforteroche.log',
+    'monolog.name' => 'Projet3BlogForteroche',
+    'monolog.level' => $app['monolog.level']
+));
 
 // Register services
 $app['dao.article'] = function ($app) {
@@ -55,10 +60,17 @@ $app['dao.comment'] = function ($app) {
     return $commentDAO;
 };
 
-// Register JSON data decoder for JSON requests
-$app->before(function (Request $request) {
-    if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-        $data = json_decode($request->getContent(), true);
-        $request->request->replace(is_array($data) ? $data : array());
+// Register error handler
+$app->error(function (\Exception $e, Request $request, $code) use ($app) {
+    switch ($code) {
+        case 403:
+            $message = 'Access denied.';
+            break;
+        case 404:
+            $message = 'The requested resource could not be found.';
+            break;
+        default:
+            $message = "Something went wrong.";
     }
+    return $app['twig']->render('error.html.twig', array('message' => $message));
 });

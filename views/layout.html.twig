@@ -12,7 +12,11 @@
         <title>Billet simple pour l'Alaska | {% block title %}{% endblock %}</title>
     </head>
     <body>
-        <div id="jumbocontent">{% block jumbo %}{% endblock %}</div>
+        <div id="jumbocontent">
+            {% block jumbo %}
+            {% endblock %}
+        </div>
+        
         <div class="container">
             <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="container">
@@ -61,7 +65,7 @@
             </nav>
         </div>
         
-        <div id="content">
+        <div id="content" class="container">
             {% block content %}
             {% endblock %}
         </div>

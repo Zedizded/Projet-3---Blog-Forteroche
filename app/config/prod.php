@@ -10,3 +10,6 @@ $app['db.options'] = array(
     'user'     => 'jforteroche_admin',
     'password' => 'fHt4lvhk2SVwEkAB',
 );
+
+// define log level
+$app['monolog.level'] = 'WARNING';

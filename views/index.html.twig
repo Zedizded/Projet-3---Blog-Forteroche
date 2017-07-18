@@ -3,21 +3,19 @@
 {% block title %}Accueil{% endblock %}
 
 {% block jumbo %}
-    <div id="jumbocontent">
         <div id="jumbo" class="jumbotron">
             <div class="container">
                 <h1>Billet simple pour l'Alaska</h1>
                 <p>Le livre en ligne by Jean Forteroche</p>
             </div>
-            <div id="btnRead" class="row">
+            <div id="btnRead" class="container">
                 <a id="spyingScroll" href="#accordion" class="btn btn-lg col-xl-2 col-xs-offset-5">Très bonne lecture...<br><span class="glyphicon glyphicon-circle-arrow-down"></span></a>
             </div>
         </div>
-    </div>
 {% endblock %}
 {% block content %}
     <div class="container">
-        <div id="accordion" class="col-xl-10 col-xs-offset-1">
+        <div id="accordion" class="col-xs-10 col-xs-offset-1">
         {% for article in articles %}
             <h3>{{ article.title }}</h3>
             <article>
