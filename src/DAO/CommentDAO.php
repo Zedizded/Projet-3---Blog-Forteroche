@@ -113,6 +113,8 @@ class CommentDAO extends DAO
 
     /**
      * Update a flagged comment.
+     *
+     * @param \Projet3BlogForteroche\Domain\Comment $comment The comment to update
      */
     public function updateFlag($commentId,$newValue) {
        $commentData = array(
